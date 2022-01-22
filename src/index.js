@@ -26,6 +26,7 @@ const mount = (app) => __awaiter(void 0, void 0, void 0, function* () {
     app.use((0, cookie_parser_1.default)(process.env.SECRET));
     app.use((0, compression_1.default)());
     app.use(express_1.default.static(`${__dirname}/client`));
+    app.get("/*", (_req, res) => res.sendFile(`${__dirname}/client/index.html`));
     const server = new apollo_server_express_1.ApolloServer({
         typeDefs: graphql_1.typeDefs,
         resolvers: graphql_1.resolvers,
@@ -35,7 +36,6 @@ const mount = (app) => __awaiter(void 0, void 0, void 0, function* () {
         ]
     });
     server.start().then(() => __awaiter(void 0, void 0, void 0, function* () {
-        app.get("/*", (_req, res) => res.sendFile(`${__dirname}/client/index.html`));
         server.applyMiddleware({ app, path: "/api" });
         app.listen(process.env.PORT);
         console.log(`[app] : http://localhost:${process.env.PORT}`);
